@@ -16,3 +16,12 @@ struct Reservation {
     let price: Double
     let breakfast: Bool
 }
+
+// ReservationError. Enumerado que implemente Error con tres errores (cases) posibles: se encontró reserva con el mismo ID, se encontró reserva para un cliente y no se encontró reserva
+
+enum ReservationError: Error {
+    case sameID
+    case clientAlreadyReserved
+    case reservationNotFound
+}
+
