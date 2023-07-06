@@ -81,11 +81,38 @@ class HotelReservationManager {
 
 // test
 
-let hotelReservationManager = HotelReservationManager()
-let goku = Client(name: "Goku", age: 24, height: 175)
-let vegeta = Client(name: "Vegeta", age: 27, height: 175)
-let vegeta2 = Client(name: "Vegeta2", age: 27, height: 175)
-try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [goku, vegeta2], duration: 3, breakfast: true)
-try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [vegeta], duration: 4, breakfast: true)
-try hotelReservationManager.cancelReservation(with: 2)
-hotelReservationManager.reservations
+func testAddReservation() {
+    let hotelReservationManager = HotelReservationManager()
+    let goku = Client(name: "Goku", age: 24, height: 175)
+    let vegeta = Client(name: "Vegeta", age: 27, height: 175)
+    let vegeta2 = Client(name: "Vegeta2", age: 27, height: 175)
+
+    do {
+        try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [goku, vegeta2], duration: 3, breakfast: true)
+        assert(hotelReservationManager.reservations.count == 1, "Debe haber 1 reserva")
+        
+        try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [vegeta], duration: 4, breakfast: true)
+        assert(hotelReservationManager.reservations.count == 2, "Debe haber 2 reservas")
+    } catch {
+        assertionFailure("No se esperaba un error al añadir reservas")
+    }
+    
+    do {
+        try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [goku], duration: 3, breakfast: true)
+    } catch ReservationError.clientAlreadyReserved {
+        print("Cliente ya reservado, error esperado")
+    } catch {
+        assertionFailure("Se esperaba un error de tipo 'clientAlreadyReserved'")
+    }
+}
+
+testAddReservation()
+
+//let hotelReservationManager = HotelReservationManager()
+//let goku = Client(name: "Goku", age: 24, height: 175)
+//let vegeta = Client(name: "Vegeta", age: 27, height: 175)
+//let vegeta2 = Client(name: "Vegeta2", age: 27, height: 175)
+//try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [goku, vegeta2], duration: 3, breakfast: true)
+//try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [vegeta], duration: 4, breakfast: true)
+//try hotelReservationManager.cancelReservation(with: 2)
+///hotelReservationManager.reservations
