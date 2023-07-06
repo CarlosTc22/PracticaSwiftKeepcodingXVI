@@ -57,7 +57,6 @@ class HotelReservationManager {
         let clientCount = Double(clients.count)
         let durationDouble = Double(duration)
         let breakfastPrice = breakfast ? 1.25 : 1.0
-        print(clientCount)
         let price = clientCount * basePrice * durationDouble * breakfastPrice
         
         // Añade la reserva al listado de reservas
@@ -106,13 +105,44 @@ func testAddReservation() {
     }
 }
 
-testAddReservation()
+func testCancelReservation() {
+    let hotelReservationManager = HotelReservationManager()
+    let goku = Client(name: "Goku", age: 24, height: 175)
+    let vegeta = Client(name: "Vegeta", age: 27, height: 175)
+    let vegeta2 = Client(name: "Vegeta2", age: 27, height: 175)
 
-//let hotelReservationManager = HotelReservationManager()
-//let goku = Client(name: "Goku", age: 24, height: 175)
-//let vegeta = Client(name: "Vegeta", age: 27, height: 175)
-//let vegeta2 = Client(name: "Vegeta2", age: 27, height: 175)
-//try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [goku, vegeta2], duration: 3, breakfast: true)
-//try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [vegeta], duration: 4, breakfast: true)
-//try hotelReservationManager.cancelReservation(with: 2)
-///hotelReservationManager.reservations
+    do {
+        try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [goku, vegeta2], duration: 3, breakfast: true)
+        try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [vegeta], duration: 4, breakfast: true)
+        
+        try hotelReservationManager.cancelReservation(with: 2)
+        assert(hotelReservationManager.reservations.count == 1, "Debe haber 1 reserva después de cancelar")
+    } catch {
+        assertionFailure("No se esperaba un error al cancelar la reserva")
+    }
+    
+    do {
+        try hotelReservationManager.cancelReservation(with: 2)
+    } catch ReservationError.reservationNotFound {
+        print("Error esperado al cancelar una reserva inexistente")
+    } catch {
+        assertionFailure("Se esperaba un error de tipo 'reservationNotFound'")
+    }
+}
+
+func testReservationPrice() {
+    let hotelReservationManager = HotelReservationManager()
+    let goku = Client(name: "Goku", age: 24, height: 175)
+    let vegeta = Client(name: "Vegeta", age: 27, height: 175)
+
+    do {
+        let reservation1 = try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [goku], duration: 3, breakfast: true)
+        let reservation2 = try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [vegeta], duration: 3, breakfast: true)
+        assert(reservation1.price == reservation2.price, "Los precios de las reservas deberían ser iguales")
+    } catch {
+        assertionFailure("No se esperaba un error al añadir reservas")
+    }
+}
+testAddReservation()
+testCancelReservation()
+testReservationPrice()
