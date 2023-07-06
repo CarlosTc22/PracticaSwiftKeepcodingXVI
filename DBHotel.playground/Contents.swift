@@ -26,7 +26,7 @@ enum ReservationError: Error {
 }
 
 class HotelReservationManager {
-    // Crea un listado para almacenar reservas
+    // Crea un listado para almacenar reservas, es privado pero se puede acceder desde fuera a ver su contenido
     
     private (set) var reservations: [Reservation] = []
     
