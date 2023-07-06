@@ -42,11 +42,11 @@ class HotelReservationManager {
             if reservation.id == newID {
                 throw ReservationError.sameID
             }
-
-        for client in reservation.clients {
-            for newClient in clients {
-                if client.name == newClient.name {
-                    throw ReservationError.clientAlreadyReserved
+            
+            for client in reservation.clients {
+                for newClient in clients {
+                    if client.name == newClient.name {
+                        throw ReservationError.clientAlreadyReserved
                     }
                 }
             }
@@ -74,8 +74,8 @@ class HotelReservationManager {
             reservations.remove(at: index)
         } else {
             throw ReservationError.reservationNotFound
-            }
         }
+    }
 }
 
 // test
@@ -85,7 +85,7 @@ func testAddReservation() {
     let goku = Client(name: "Goku", age: 24, height: 175)
     let vegeta = Client(name: "Vegeta", age: 27, height: 175)
     let vegeta2 = Client(name: "Vegeta2", age: 27, height: 175)
-
+    
     do {
         try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [goku, vegeta2], duration: 3, breakfast: true)
         assert(hotelReservationManager.reservations.count == 1, "Debe haber 1 reserva")
@@ -110,7 +110,7 @@ func testCancelReservation() {
     let goku = Client(name: "Goku", age: 24, height: 175)
     let vegeta = Client(name: "Vegeta", age: 27, height: 175)
     let vegeta2 = Client(name: "Vegeta2", age: 27, height: 175)
-
+    
     do {
         try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [goku, vegeta2], duration: 3, breakfast: true)
         try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [vegeta], duration: 4, breakfast: true)
@@ -134,7 +134,7 @@ func testReservationPrice() {
     let hotelReservationManager = HotelReservationManager()
     let goku = Client(name: "Goku", age: 24, height: 175)
     let vegeta = Client(name: "Vegeta", age: 27, height: 175)
-
+    
     do {
         let reservation1 = try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [goku], duration: 3, breakfast: true)
         let reservation2 = try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [vegeta], duration: 3, breakfast: true)
