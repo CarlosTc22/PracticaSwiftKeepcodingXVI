@@ -57,6 +57,7 @@ class HotelReservationManager {
         let clientCount = Double(clients.count)
         let durationDouble = Double(duration)
         let breakfastPrice = breakfast ? 1.25 : 1.0
+        print(clientCount)
         let price = clientCount * basePrice * durationDouble * breakfastPrice
         
         // Añade la reserva al listado de reservas
@@ -74,6 +75,8 @@ class HotelReservationManager {
 
 let hotelReservationManager = HotelReservationManager()
 let goku = Client(name: "Goku", age: 24, height: 175)
-try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [goku], duration: 3, breakfast: true)
-
-print (hotelReservationManager.reservations)
+let vegeta = Client(name: "Vegeta", age: 27, height: 175)
+let vegeta2 = Client(name: "Vegeta2", age: 27, height: 175)
+try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [goku, vegeta2], duration: 3, breakfast: true)
+try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [vegeta], duration: 4, breakfast: true)
+hotelReservationManager.reservations
