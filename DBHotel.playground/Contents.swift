@@ -69,6 +69,14 @@ class HotelReservationManager {
         
         return newReservation
     }
+    
+    func cancelReservation(with id: Int) throws {
+        if let index = reservations.firstIndex(where: { $0.id == id }) {
+            reservations.remove(at: index)
+        } else {
+            throw ReservationError.reservationNotFound
+            }
+        }
 }
 
 // test
@@ -79,4 +87,5 @@ let vegeta = Client(name: "Vegeta", age: 27, height: 175)
 let vegeta2 = Client(name: "Vegeta2", age: 27, height: 175)
 try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [goku, vegeta2], duration: 3, breakfast: true)
 try hotelReservationManager.addReservation(hotelName: "DB Hotel", clients: [vegeta], duration: 4, breakfast: true)
+try hotelReservationManager.cancelReservation(with: 2)
 hotelReservationManager.reservations
